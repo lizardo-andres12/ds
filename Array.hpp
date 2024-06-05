@@ -20,6 +20,9 @@ public:
     void add(T data);
     void insert(T data, int index);
     T* del(int index);
+    T* lshift();
+    void lrotate(int pos = 1);
+    void reverse();
     void display();
     T& operator[](int index);
     const T& operator[](int index) const;
@@ -31,10 +34,13 @@ template <class T>
 Array<T>::Array() : arr(new T[10]), size(10), length(0) {}
 
 template <class T>
-Array<T>::Array(int size) : arr(new T[size]), size(size), length(0) {}
+Array<T>::Array(int size) : arr(new T[size]), size(size), length(0) {
+    if (size <= 0) throw std::logic_error("Invalid size");
+}
 
 template <class T>
-Array<T>::Array(T arr[], int size) : arr(new T[size]), size(size), length(length) {
+Array<T>::Array(T arr[], int size) : arr(new T[size]), size(size), length(size) {
+    if (size <= 0) throw std::logic_error("Invalid size");
     for (int i = 0; i < size; i++) this->arr[i] = arr[i];
 }
 
@@ -76,16 +82,51 @@ T* Array<T>::del(int index) {
     return data;
 }
 
+template <class T>
+T* Array<T>::lshift() {
+    if (length == 0) throw std::length_error("Array is empty");
+    T* data = new T(arr[0]);
+    for (int i = 0; i < length; i++) {
+        arr[i] = arr[i + 1];
+    }
+    length--;
+    return data;
+}
+
+
+// element shifters
+template <class T>
+void Array<T>::reverse() {
+    for (int i = 0, j = length - 1; i < length; i++, j--) {
+        T& temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+}
+
+template <class T>
+void Array<T>::lrotate(int pos) {
+    if (pos <= 0) throw std::logic_error("Invalid rotation");
+    for (int i = 0; i < size; i++) {
+        arr[i] = arr[i - pos >= 0 ? i - pos - 1 : size + i - pos];
+    }
+}
 
 // getters
 template <class T>
 int Array<T>::get_length() const { return length; }
 
 template <class T>
-T& Array<T>::operator[](int index) { return arr[index]; }
+T& Array<T>::operator[](int index) { 
+    if (index < 0 || index >= length) throw std::out_of_range("Index out of bounds");
+    return arr[index]; 
+}
 
 template <class T>
-const T& Array<T>::operator[](int index) const { return arr[index]; }
+const T& Array<T>::operator[](int index) const { 
+    if (index < 0 || index >= length) throw std::out_of_range("Index out of bounds");
+    return arr[index]; 
+}
 
 
 // print

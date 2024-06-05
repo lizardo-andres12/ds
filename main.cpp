@@ -39,6 +39,11 @@ void test_del(Array<int>& arr) {
 
 
 int main(void) {
+    int array[] = {5, 2, 3};
+    Array<int> arr (array, 3);
+    int* x = arr.lshift();
+    std::cout << *x << " ";
+    arr.display();
     Array<int> oarr(3);
     test_add(oarr);
     oarr.display();
