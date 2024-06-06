@@ -1,4 +1,5 @@
 #include "Array.hpp"
+#include <stdexcept>
 
 
 void test_add(Array<int>& arr) {
@@ -41,6 +42,9 @@ void test_del(Array<int>& arr) {
 int main(void) {
     int array[] = {5, 2, 3};
     Array<int> arr (array, 3);
+    std::cout << arr[-1] << arr[-2] << '\n';
+    try { arr[-4]; }
+    catch(std::out_of_range& e) { std::cout << e.what(); }
     int* x = arr.lshift();
     std::cout << *x << " ";
     arr.display();

@@ -117,15 +117,17 @@ template <class T>
 int Array<T>::get_length() const { return length; }
 
 template <class T>
-T& Array<T>::operator[](int index) { 
-    if (index < 0 || index >= length) throw std::out_of_range("Index out of bounds");
-    return arr[index]; 
+T& Array<T>::operator[](int index) {
+    if ((index * -1) > length || index >= length) throw std::out_of_range("Index out of bounds");
+    if (index < 0 && index * -1 <= length) return arr[length + index];
+    return arr[index];
 }
 
 template <class T>
-const T& Array<T>::operator[](int index) const { 
-    if (index < 0 || index >= length) throw std::out_of_range("Index out of bounds");
-    return arr[index]; 
+const T& Array<T>::operator[](int index) const {
+    if ((index * -1) > length || index >= length) throw std::out_of_range("Index out of bounds");
+    if (index < 0 && index * -1 <= length) return arr[(index * -1) - 1];
+    return arr[index];
 }
 
 
